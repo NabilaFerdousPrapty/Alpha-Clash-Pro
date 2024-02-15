@@ -1,37 +1,54 @@
 function handleKeyboardButtonPress(event) {
-    // console.log('button pressed');
-    // console.log(event.key);
-    const playerPressed=event.key;
-    const currentAlphabetElement=document.getElementById('current-alphabet');
-    // console.log(currentAlphabetElement);
-    const currentAlphabet=currentAlphabetElement.innerText.toLowerCase();
-    console.log(playerPressed,currentAlphabet);
+  // console.log('button pressed');
+  // console.log(event.key);
 
-    if (playerPressed===currentAlphabet) {
-        console.log('You got a point');
-        const currentScoreElement=document.getElementById('current-score');
-       const currentScoreText=currentScoreElement.innerText;
-       const currentScore=parseInt(currentScoreText)
-      const newScore =currentScore+1;
-      console.log(newScore);
-      currentScoreElement.innerText=newScore;
-        // console.log(currentScoreText);
-        removeBackgroundColorById(currentAlphabet);
-        continueGame();
-    }else{
-        console.log('You missed !!!!!! you lost a life');
-        const currentLifeElement=document.getElementById('current-life');
-        const currentLifeText=currentLifeElement.innerText;
-        const currentLife=parseInt(currentLifeText);
-        const newLife=currentLife-1;
-        console.log(newLife);
-        currentLifeElement.innerText=newLife;
-        if (newLife===0) {
-          
-        }
+  const playerPressed = event.key;
+  // console.log(playerPressed);
+  if (playerPressed==='Escape') {
+    gameOver();
+    
+  }
+  const currentAlphabetElement = document.getElementById("current-alphabet");
+  // console.log(currentAlphabetElement);
+  const currentAlphabet = currentAlphabetElement.innerText.toLowerCase();
+  // console.log(playerPressed, currentAlphabet);
+
+  if (playerPressed === currentAlphabet) {
+    // console.log('You got a point');
+    // const currentScoreElement=document.getElementById('current-score');
+    //  const currentScoreText=currentScoreElement.innerText;
+    //  const currentScore=parseInt(currentScoreText)
+    // const currentScore=getTextElementValueById('current-score');
+    // const newScore =currentScore+1;
+    // console.log(newScore);
+    // currentScoreElement.innerText=newScore;
+    // console.log(currentScoreText);
+    const currentScore = getTextElementValueById("current-score");
+    const newScore = currentScore + 1;
+    setTextElementValueById("current-score", newScore);
+    removeBackgroundColorById(currentAlphabet);
+    continueGame();
+  } else {
+    console.log("You missed !!!!!! you lost a life");
+    // const currentLifeElement=document.getElementById('current-life');
+    // const currentLifeText=currentLifeElement.innerText;
+    // const currentLife=parseInt(currentLifeText);
+    // const currentLife=getTextElementValueById('current-life');
+    // console.log(newLife);
+    // currentLifeElement.innerText=newLife;
+
+    const currentLife = getTextElementValueById("current-life");
+    const newLife = currentLife - 1;
+    setTextElementValueById("current-life", newLife);
+    
+    if (newLife === 0) {
+      console.log('game over');
+      gameOver();
+
     }
+  }
 }
-document.addEventListener('keyup',handleKeyboardButtonPress)
+document.addEventListener("keyup", handleKeyboardButtonPress);
 
 function continueGame() {
   const alphabet = getARandomAlphabet();
@@ -40,6 +57,7 @@ function continueGame() {
   const currentAlphabetElement = document.getElementById("current-alphabet");
   currentAlphabetElement.innerText = alphabet.toUpperCase();
   setBackgroundColorById(alphabet);
+  
 }
 
 function playNow() {
@@ -50,7 +68,24 @@ function playNow() {
 
   hideElementById("home-screen");
   showElementById("play-ground");
+  hideElementById('final-score');
+  setTextElementValueById('current-life',5);
+  setTextElementValueById('current-score',0)
   continueGame();
+  
+}
+function gameOver() {
+  hideElementById('play-ground');
+  showElementById('final-score');
+  const lastScore=getTextElementValueById('current-score');
+  console.log(lastScore);
+  setTextElementValueById('last-score',lastScore);
+  // const currentAlphabetElement = document.getElementById("current-alphabet");
+  // const currentAlphabet = currentAlphabetElement.innerText.toLowerCase();
+  const Alphabet=getElementTextById('current-alphabet');
+  const currentAlphabet=Alphabet.toLowerCase();
+  removeBackgroundColorById(currentAlphabet);
+
 }
 
 function setBackgroundColorById(elementID) {
@@ -67,7 +102,7 @@ function getARandomAlphabet() {
   const alphabets = alphabetString.split("");
   // console.log(alphabets);
 
-  const random = Math.round(Math.random() * 25 );
+  const random = Math.round(Math.random() * 25);
   // console.log(random);
 
   const alphabet = alphabets[random];
